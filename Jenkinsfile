@@ -11,9 +11,10 @@ pipeline {
         NEXUS_PROTOCOL = "https"
         NEXUS_URL = "nexus.3etechsolution.com"
         NEXUS_REPOSITORY = "vprofile-release"
-	NEXUS_REPOGRP_ID    = "vprofile-grp-repo"
+	    NEXUS_REPOGRP_ID    = "vprofile-grp-repo"
         NEXUS_CREDENTIAL_ID = "nexuslogin"
         ARTVERSION = "${env.BUILD_ID}"
+        NEXUSPORT = '8081'
     }
 	
     stages{
