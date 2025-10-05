@@ -96,13 +96,13 @@ pipeline {
                     if(artifactExists) {
                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version} ARTVERSION";
                         nexusArtifactUploader(
-                            nexusVersion: NEXUS_VERSION,
-                            protocol: NEXUS_PROTOCOL,
-                            nexusUrl: NEXUS_URL,
-                            groupId: NEXUS_REPOGRP_ID,
-                            version: ARTVERSION,
-                            repository: NEXUS_REPOSITORY,
-                            credentialsId: NEXUS_CREDENTIAL_ID,
+                            nexusVersion: "${NEXUS_VERSION}",
+                            protocol: "${NEXUS_PROTOCOL},"
+                            nexusUrl: "${NEXUS_URL}",
+                            groupId: "${NEXUS_REPOGRP_ID}",
+                            version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                            repository: "${NEXUS_REPOSITORY}",
+                            credentialsId: "${NEXUS_CREDENTIAL_ID}",
                             artifacts: [
                                 [artifactId: pom.artifactId,
                                 classifier: '',
