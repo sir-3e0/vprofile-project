@@ -87,7 +87,7 @@ pipeline {
             steps{
                 nexusArtifactUploader(
                   nexusVersion: 'nexus3',
-                  protocol: 'http',
+                  protocol: 'https',
                   nexusUrl: "${NEXUS_URL}",
                   groupId: 'QA',
                   version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
@@ -98,13 +98,8 @@ pipeline {
                      classifier: '',
                      file: 'target/vprofile-v2.war',
                      type: 'war']
-                            ]
-                        );
-                    } 
-		    else {
-                        error "*** File: ${artifactPath}, could not be found";
-                    }
-                }
+                  ]
+                )
             }
         }
 
