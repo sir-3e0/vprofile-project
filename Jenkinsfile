@@ -1,20 +1,25 @@
 pipeline {
     
 	agent any
-/*	
+	
 	tools {
-        maven "maven3"
+        jdk "JDK17"
+        maven "MAVEN3"
     }
-*/	
+	
     environment {
+        SNAP_REPO = "vprofile-snapshot"
+        NEXUS_USER = "admin"
+        NEXUS_PASS = "school1@12"
+        CENTRAL_REPO = "vpro-maven-central"
         NEXUS_VERSION = "nexus3"
         NEXUS_PROTOCOL = "https"
         NEXUS_URL = "nexus.3etechsolution.com"
         NEXUS_REPOSITORY = "vprofile-release"
-	    NEXUS_REPOGRP_ID    = "vprofile-grp-repo"
+	    NEXUS_REPOGRP_ID    = "vpro-maven-group"
         NEXUS_CREDENTIAL_ID = "nexuslogin"
         ARTVERSION = "${env.BUILD_ID}"
-        NEXUSPORT = '8081'
+        NEXUSPORT = '80'
     }
 	
     stages{
@@ -31,14 +36,14 @@ pipeline {
             }
         }
 
-	stage('UNIT TEST'){
-            steps {
+	        stage('UNIT TEST'){
+                steps {
                 sh 'mvn test'
             }
         }
 
-	stage('INTEGRATION TEST'){
-            steps {
+	        stage('INTEGRATION TEST'){
+                steps {
                 sh 'mvn verify -DskipUnitTests'
             }
         }
@@ -116,6 +121,27 @@ pipeline {
         }
 
 
+    }
+    post {
+        success {
+            emailext (
+                subject: "SUCCESS: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: "Good news! Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' succeeded.\n\nCheck console output at ${env.BUILD_URL}",
+                to: 'emana.ewi@gmail.com'
+            )
+        }
+
+        failure {
+            emailext (
+                subject: "FAILURE: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+                body: "Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' failed.\n\nCheck details: ${env.BUILD_URL}",
+                to: 'emana.ewi@gmail.com'
+            )
+        }
+
+        always {
+            echo 'This runs regardless of build result'
+        }
     }
 
 
