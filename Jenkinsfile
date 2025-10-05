@@ -98,7 +98,7 @@ pipeline {
                         nexusArtifactUploader(
                             nexusVersion: "${NEXUS_VERSION}",
                             protocol: "${NEXUS_PROTOCOL},"
-                            nexusUrl: "${NEXUS_URL}",
+                            nexusUrl: "${NEXUS_URL}/nexus",
                             groupId: "${NEXUS_REPOGRP_ID}",
                             version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
                             repository: "${NEXUS_REPOSITORY}",
