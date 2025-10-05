@@ -61,15 +61,13 @@ pipeline {
             }
         }
 
-        stage('CODE ANALYSIS with SONARQUBE') {
-          
-		  environment {
-             scannerHome = tool "sonarscanner"
-          }
-
-          steps {
-            withSonarQubeEnv("sonarserver") {
-               sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+        stage('Sonar Analysis') {
+            environment {
+                scannerHome = tool "${SONARSCANNER}"
+            }
+            steps {
+               withSonarQubeEnv("${SONARSERVER}") {
+                   sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
                    -Dsonar.projectName=vprofile \
                    -Dsonar.projectVersion=1.0 \
                    -Dsonar.sources=src/ \
@@ -85,30 +83,21 @@ pipeline {
           }
         }
 
-        stage("Publish to Nexus Repository Manager") {
-            steps {
-                script {
-                    pom = readMavenPom file: "pom.xml";
-                    filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
-                    artifactPath = filesByGlob[0].path;
-                    artifactExists = fileExists artifactPath;
-                    if(artifactExists) {
-                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version} ARTVERSION";
-                        nexusArtifactUploader(
-                            nexusVersion: "${NEXUS_VERSION}",
-                            protocol: "${NEXUS_PROTOCOL}",
-                            nexusUrl: "${NEXUS_URL}",
-                            groupId: "${NEXUS_REPOGRP_ID}",
-                            version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-                            repository: "${NEXUS_REPOSITORY}",
-                            credentialsId: "${NEXUS_CREDENTIAL_ID}",
-                            artifacts: [
-                                [artifactId: 'vproapp',
-                                classifier: '',
-                                file: 'target/vprofile-v2.war',
-                                classifier: '',
-                                type: 'war']
+        stage("UploadArtifact"){
+            steps{
+                nexusArtifactUploader(
+                  nexusVersion: 'nexus3',
+                  protocol: 'http',
+                  nexusUrl: "${NEXUS_URL}",
+                  groupId: 'QA',
+                  version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                  repository: "${RELEASE_REPO}",
+                  credentialsId: "${NEXUS_LOGIN}",
+                  artifacts: [
+                    [artifactId: 'vproapp',
+                     classifier: '',
+                     file: 'target/vprofile-v2.war',
+                     type: 'war']
                             ]
                         );
                     } 
