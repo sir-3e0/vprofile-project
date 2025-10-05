@@ -30,7 +30,7 @@
     <mirror>
       <id>${CENTRAL-REPO}</id>
       <name>${CENTRAL-REPO}</name>
-      <url>https://${NEXUS_URL}:${NEXUSPORT}/repository/${NEXUS_REPOGRP_ID}/</url>
+      <url>https://${NEXUS_URL}/repository/${NEXUS_REPOGRP_ID}/</url>
       <mirrorOf>*</mirrorOf>
     </mirror>
   </mirrors>
