@@ -70,7 +70,7 @@ pipeline {
           steps {
             withSonarQubeEnv("${SONARSERVER}") {
                sh '''${scannerHome}/bin/sonar-scanner -X -Dsonar.projectKey=vprofile \
-                   -Dsonar.projectName=vprofile-repo \
+                   -Dsonar.projectName=vprofile \
                    -Dsonar.projectVersion=1.0 \
                    -Dsonar.sources=src/ \
                    -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
@@ -104,14 +104,11 @@ pipeline {
                             repository: "${NEXUS_REPOSITORY}",
                             credentialsId: "${NEXUS_CREDENTIAL_ID}",
                             artifacts: [
-                                [artifactId: pom.artifactId,
+                                [artifactId: 'vproapp',
                                 classifier: '',
-                                file: artifactPath,
-                                type: pom.packaging],
-                                [artifactId: pom.artifactId,
+                                file: 'target/vprofile-v2.war',
                                 classifier: '',
-                                file: "pom.xml",
-                                type: "pom"]
+                                type: 'war']
                             ]
                         );
                     } 
