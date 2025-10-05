@@ -20,7 +20,7 @@ pipeline {
         NEXUS_CREDENTIAL_ID = "nexuslogin"
         ARTVERSION = "${env.BUILD_ID}"
         NEXUSPORT = '80'
-        SONARSERVER = "ssonarserver"
+        SONARSERVER = "sonarserver"
         SONARSCANNER = "sonarscanner"
     }
 	
