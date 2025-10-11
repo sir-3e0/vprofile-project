@@ -24,7 +24,6 @@ pipeline {
         NEXUSPORT = '80'
         SONARSERVER = "sonarserver"
         SONARSCANNER = "sonarscanner"
-        ARTVERSION = "${env.BUILD_ID}"
     }
 	
     stages{
