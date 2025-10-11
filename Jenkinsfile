@@ -10,6 +10,8 @@ pipeline {
     environment {
         SNAP_REPO = "vprofile-snapshot"
         NEXUS_USER = "admin"
+        NEXUS_IP = "192.168.1.55"
+        NEXUS_PORT = "8081"
         NEXUS_PASS = "school1@12"
         CENTRAL_REPO = "vpro-maven-central"
         NEXUS_VERSION = "nexus3"
@@ -22,6 +24,7 @@ pipeline {
         NEXUSPORT = '80'
         SONARSERVER = "sonarserver"
         SONARSCANNER = "sonarscanner"
+        ARTVERSION = "${env.BUILD_ID}"
     }
 	
     stages{
